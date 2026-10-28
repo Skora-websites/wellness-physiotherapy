@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wellnessphysiotherapy.com/sitemap.xml
