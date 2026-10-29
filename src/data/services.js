@@ -1,3 +1,5 @@
+// Optional per-service override: `detail: { mediaBadge, pills, faqs: [{ q, a }] }`
+// — anything omitted falls back to SERVICE_DETAIL in detailContent.js.
 export const services = [
   {
     slug: 'neurological-physiotherapy',

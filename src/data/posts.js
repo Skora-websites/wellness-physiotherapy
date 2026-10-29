@@ -1,3 +1,6 @@
+// Optional per-post override: `content: { subtitle, readTime, caption,
+// sectionHeadings, quote: { text, cite }, closing }` — anything omitted falls
+// back to BLOG_DETAIL in detailContent.js.
 export const posts = [
   {
     slug: 'back-pain-habits',

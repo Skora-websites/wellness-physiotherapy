@@ -16,6 +16,22 @@ for (const route of staticRoutes) {
   await fs.writeFile(target, page)
 }
 
-// The site serves its videos from /assets/video; this duplicated public folder
-// is not referenced by the frontend and needlessly doubles the static upload.
+// Ship the admin-fallback page so /admin and /admin/* serve a friendly
+// offline notice instead of the normal site shell (Vercel rewrites catch
+// these paths before the client app can run).
+await fs.mkdir(path.join(clientDir, 'backoffice'), { recursive: true })
+await fs.copyFile(path.join('public', 'backoffice', 'index.html'), path.join(clientDir, 'backoffice', 'index.html'))
+
+// Remove the duplicated public folder that is not referenced by the frontend.
 await fs.rm(path.join(clientDir, 'testimonial_videos'), { recursive: true, force: true })
+
+// Give the backoffice notice explicit cache-control headers in the static
+// output so stale admin shells do not get served from a CDN edge.
+await fs.writeFile(
+  path.join(clientDir, 'backoffice', 'index.html'),
+  (await fs.readFile(path.join(clientDir, 'backoffice', 'index.html'), 'utf8')).replace(
+    '</head>',
+    '<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/><meta http-equiv="Pragma" content="no-cache"/><meta http-equiv="Expires" content="0"/></head>'
+  ),
+  'utf8'
+)

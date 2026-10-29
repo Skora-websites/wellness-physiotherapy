@@ -8,9 +8,12 @@ import ServiceDetailPage from './pages/ServiceDetailPage'
 import BlogPage from './pages/BlogPage'
 import BlogDetailPage from './pages/BlogDetailPage'
 import GalleryPage from './pages/GalleryPage'
+import StandalonePage from './pages/StandalonePage'
 import ContactPage from './pages/ContactPage'
 import NotFoundPage from './pages/NotFoundPage'
 import { resolveRoute } from './lib/routes'
+import { useContent, usePageSeo } from './lib/content'
+import AdminApp from './admin/AdminApp'
 import { loadSiteScripts } from './lib/loadSiteScripts'
 import { initSectionTypographyAnimations } from './lib/typographyFlip'
 import AppointmentModal from './components/AppointmentModal'
@@ -24,6 +27,8 @@ const pages = {
   blogDetail: BlogDetailPage,
   contact: ContactPage,
   gallery: GalleryPage,
+  blogAlias: BlogDetailPage,
+  standalone: StandalonePage,
   notFound: NotFoundPage
 }
 
@@ -83,7 +88,10 @@ export default function App({ path = '/' }) {
     }
   }, [])
 
+  const isAdmin = currentPath.startsWith('/admin')
+
   useEffect(() => {
+    if (isAdmin) return undefined
     // Webflow interactions must run against the mounted DOM on route changes
     loadSiteScripts().catch((error) => console.error(error))
     // Trigger 3D letter flip typography animation on all section headers as they enter view
@@ -91,9 +99,27 @@ export default function App({ path = '/' }) {
       initSectionTypographyAnimations()
     }, 60)
     return () => clearTimeout(timer)
-  }, [currentPath])
+  }, [currentPath, isAdmin])
 
   const { page, slug } = resolveRoute(currentPath)
+  const { pageSeo } = useContent()
+  const seo = pageSeo.find((entry) => entry.path === (currentPath.split('?')[0] || '/'))
+  const isDetail = page === 'serviceDetail' || page === 'blogDetail' || page === 'standalone' || page === 'blogAlias'
+
+  usePageSeo(
+    isAdmin || isDetail || !seo
+      ? {}
+      : {
+          path: currentPath,
+          title: seo.metaTitle || undefined,
+          description: seo.metaDescription || undefined,
+          keywords: seo.metaKeywords || undefined,
+          canonical: seo.canonicalUrl || undefined,
+        }
+  )
+
+  if (isAdmin) return <AdminApp />
+
   const Page = pages[page] || NotFoundPage
 
   return (

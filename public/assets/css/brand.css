@@ -2767,13 +2767,18 @@ textarea:focus-visible,
   box-shadow: 0 16px 36px rgba(15, 63, 102, 0.12) !important;
 }
 
-/* Choose Cards with Animated Cloudscape Background - Half Height Compact Layout */
+/* Choose Cards - CSS cloud gradient background (no WebGL) - Half Height Compact Layout */
 .choose-card {
   position: relative !important;
   overflow: hidden !important;
   border-radius: var(--_spacing---radius--radius-3x, 18px) !important;
   border: 1px solid rgba(11, 52, 83, 0.08) !important;
   background-color: #ffffff !important;
+  /* CSS-only cloud wash: the cards never create a WebGL context. */
+  background-image:
+    radial-gradient(120% 90% at 22% 8%, #ffffff 0%, rgba(255, 255, 255, 0) 52%),
+    radial-gradient(130% 90% at 86% 26%, #d3e8f9 0%, rgba(211, 232, 249, 0) 62%),
+    linear-gradient(180deg, #f6fbff 0%, #e3eefb 46%, #c5e1f7 100%) !important;
   box-shadow: 0 4px 16px rgba(11, 52, 83, 0.04) !important;
   padding: 14px 18px !important;
   grid-column-gap: 10px !important;
@@ -2791,16 +2796,6 @@ textarea:focus-visible,
   box-shadow: 0 10px 24px rgba(11, 52, 83, 0.1) !important;
 }
 
-.choose-card .cloudscape-host {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 0 !important;
-  border-radius: inherit !important;
-  opacity: 0.88 !important;
-  pointer-events: none !important;
-}
 
 .choose-card-icon-wrap,
 .choose-card-content-wrap,
@@ -4320,10 +4315,17 @@ textarea:focus-visible,
   will-change: transform, opacity;
 }
 
-/* Trigger animation on viewport entry */
+/* Trigger animation on viewport entry.
+   Each .flip-word already carries --char-index = its word position (set in
+   typographyFlip.js), so every character in the same word shares one delay.
+   Stagger by word so the whole line flips up together, matching the hero
+   headline behaviour. */
 .perspective-header.is-flipped .flip-char {
   animation: sectionLetterFlipUp 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
-  animation-delay: calc(var(--char-index, 0) * 60ms) !important;
+  /* --char-index is set by typographyFlip.js on every .flip-char to the word's
+     index, so all characters in the same word share one delay = one line at a
+     time, matching the hero headline behaviour. */
+  animation-delay: calc(var(--char-index, 0) * 120ms) !important;
 }
 
 @keyframes sectionLetterFlipUp {
@@ -4471,8 +4473,8 @@ textarea:focus-visible,
   }
 
   .hero-editorial-fullbleed-img {
-    height: 350px;
-    object-position: center 20% !important;
+    height: 420px;
+    object-position: center 24% !important;
   }
 }
 
@@ -4931,6 +4933,26 @@ textarea:focus-visible,
 .appointment-modal-success {
   text-align: center;
   padding: 20px 0;
+}
+
+.appointment-modal-status {
+  margin: 12px 0 0;
+  font-family: var(--body-font);
+  font-size: 12.5px;
+  color: #4a5d6b;
+}
+
+.appointment-modal-save-error {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-chip, 12px);
+  background: #fdeaea;
+  border: 1px solid rgba(179, 38, 30, 0.25);
+  font-family: var(--body-font);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #942727;
+  text-align: left;
 }
 
 .appointment-modal-success-badge {
@@ -7550,6 +7572,8 @@ textarea {
   flex-direction: column !important;
   gap: 44px !important;
   min-width: 0 !important;
+  max-width: 880px !important;
+  margin: 0 auto !important;
 }
 
 .svc-hero-media-wrap {
@@ -9364,13 +9388,13 @@ textarea {
     display: none !important;
   }
 
-  /* 5. Larger runner figure */
+  /* 5. Larger runner figure, nudged up so it reads closer to the headline */
   .hero-runner-cutout {
-    width: clamp(150px, 42vw, 176px) !important;
+    width: clamp(168px, 44vw, 184px) !important;
   }
 
   .hero-runner-overlap-wrap {
-    top: 84px !important;
+    top: 62px !important;
   }
 
   /* 6. Hero fills the viewport: top half gradient, bottom half photo */
@@ -10385,3 +10409,81 @@ textarea {
     aspect-ratio: 4 / 3 !important;
   }
 }
+
+/* Contact detail cards: real grid + block links (inline anchors were overlapping) */
+.contact-page-list {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  height: auto !important;
+}
+
+.contact-page-list .cta-contact-item {
+  display: block !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .contact-page-list {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Rich HTML content saved from the admin panel (blogs, pages, services) */
+.blog-rich-content h2,
+.blog-rich-content h3 {
+  font-family: var(--heading-font);
+  color: #0b3453;
+  line-height: 1.25;
+  margin: 28px 0 10px;
+}
+.blog-rich-content h2 { font-size: clamp(21px, 2.4vw, 26px); }
+.blog-rich-content h3 { font-size: clamp(18px, 2vw, 21px); }
+.blog-rich-content p {
+  font-family: var(--body-font);
+  font-size: 16px;
+  line-height: 1.75;
+  color: #33414c;
+  margin: 0 0 16px;
+}
+.blog-rich-content ul,
+.blog-rich-content ol { margin: 0 0 18px; padding-left: 22px; }
+.blog-rich-content li {
+  font-family: var(--body-font);
+  font-size: 16px;
+  line-height: 1.7;
+  color: #33414c;
+  margin-bottom: 8px;
+}
+.blog-rich-content blockquote {
+  margin: 22px 0;
+  padding: 16px 22px;
+  border-left: 3px solid #8ccfe0;
+  border-radius: 0 16px 16px 0;
+  background: #f0f7fc;
+  font-family: var(--body-font);
+  font-style: italic;
+  color: #0f3f66;
+}
+.blog-rich-content a { color: #155a91; }
+.blog-rich-content img { max-width: 100%; height: auto; border-radius: 14px; }
+
+/* ==========================================================================
+   MOBILE PAINT SAFETY — shader backgrounds must never be the only paint
+   ==========================================================================
+   Phones cap the number of live WebGL contexts and evict the oldest ones,
+   which left the home hero blank while it shared the page with six card
+   canvases. The choose cards are CSS-only now, so the home page keeps just
+   four shader contexts (hero, CTA band, pricing, CTA). The hero gradient
+   below is also the fallback if a context is still lost or reduced motion is
+   requested. */
+
+.hero-editorial-section {
+  background:
+    radial-gradient(120% 70% at 78% 16%, rgba(140, 207, 224, 0.34) 0%, rgba(140, 207, 224, 0) 56%),
+    radial-gradient(95% 65% at 10% 62%, rgba(21, 85, 135, 0.95) 0%, rgba(21, 85, 135, 0) 64%),
+    radial-gradient(70% 52% at 46% 98%, rgba(56, 189, 248, 0.32) 0%, rgba(56, 189, 248, 0) 72%),
+    linear-gradient(162deg, #06121c 0%, #0b3453 44%, #104470 74%, #155587 100%) !important;
+}
+

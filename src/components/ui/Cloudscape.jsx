@@ -117,9 +117,15 @@ export function Cloudscape({
 
     const gl = canvas.getContext('webgl', { antialias: true, alpha: true })
     if (!gl) {
-      console.warn('WebGL not supported for Cloudscape')
+      // No WebGL (common on low-end phones): let the CSS gradient show through.
+      host.style.display = 'none'
       return
     }
+    const onContextLost = (event) => {
+      event.preventDefault()
+      host.style.display = 'none'
+    }
+    canvas.addEventListener('webglcontextlost', onContextLost, false)
 
     const compileGLSLShader = (type, source) => {
       const shader = gl.createShader(type)
@@ -136,10 +142,16 @@ export function Cloudscape({
 
     const vertexShaderObject = compileGLSLShader(gl.VERTEX_SHADER, vertexShaderGLSL)
     const fragmentShaderObject = compileGLSLShader(gl.FRAGMENT_SHADER, fragmentShaderGLSL)
-    if (!vertexShaderObject || !fragmentShaderObject) return
+    if (!vertexShaderObject || !fragmentShaderObject) {
+      host.style.display = 'none'
+      return
+    }
 
     const glProgram = gl.createProgram()
-    if (!glProgram) return
+    if (!glProgram) {
+      host.style.display = 'none'
+      return
+    }
 
     gl.attachShader(glProgram, vertexShaderObject)
     gl.attachShader(glProgram, fragmentShaderObject)
@@ -147,6 +159,7 @@ export function Cloudscape({
 
     if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
       console.error('Program link error:', gl.getProgramInfoLog(glProgram))
+      host.style.display = 'none'
       gl.deleteProgram(glProgram)
       gl.deleteShader(vertexShaderObject)
       gl.deleteShader(fragmentShaderObject)
@@ -230,6 +243,7 @@ export function Cloudscape({
 
     return () => {
       cancelAnimationFrame(animationFrameId)
+      canvas.removeEventListener('webglcontextlost', onContextLost, false)
       resizeObserver.disconnect()
       gl.deleteBuffer(screenQuadVertexBuffer)
       gl.deleteProgram(glProgram)
