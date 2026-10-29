@@ -90,23 +90,23 @@ export default function Navbar({ path = '/' }) {
                 </span>
               </a>
               <span className='liquid-pill-divider' aria-hidden='true'></span>
+
+              {/* Mobile Hamburger Button — lives inside the pill so the navbar is one piece */}
+              <button
+                type='button'
+                aria-label='Toggle navigation menu'
+                aria-expanded={menuOpen}
+                aria-controls='primary-navigation'
+                onClick={() => setMenuOpen((open) => !open)}
+                className={`menu-button${menuOpen ? ' is-open' : ''}`}
+              >
+                <div className='menu-button-wrap'>
+                  <div className='nv-bar nv-bar-top'></div>
+                  <div className='nv-bar nv-bar-bottom'></div>
+                </div>
+              </button>
             </LiquidNavbar>
           </div>
-
-          {/* Mobile Hamburger Button */}
-          <button
-            type='button'
-            aria-label='Toggle navigation menu'
-            aria-expanded={menuOpen}
-            aria-controls='primary-navigation'
-            onClick={() => setMenuOpen((open) => !open)}
-            className={`menu-button w-nav-button${menuOpen ? ' w--open' : ''}`}
-          >
-            <div className='menu-button-wrap'>
-              <div className='menu-top'></div>
-              <div className='menu-bottom'></div>
-            </div>
-          </button>
 
           {/* Mobile Menu Dropdown */}
           <div

@@ -92,7 +92,6 @@ export default function ServiceDetailPage({ slug }) {
                   loading='eager'
                 />
                 <div className='svc-media-badge'>
-                  <span className='svc-media-badge-icon'>★</span>
                   {'Evidence-Based Rehabilitation'}
                 </div>
               </div>
