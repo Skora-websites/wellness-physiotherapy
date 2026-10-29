@@ -328,11 +328,11 @@ h6,
   position: relative !important;
   overflow: hidden !important;
   border-radius: var(--_spacing---radius--radius-3x, 18px) !important;
-  border: 1px solid rgba(11, 52, 83, 0.08) !important;
-  background-color: #ffffff !important;
+  border: 1px solid rgba(13, 68, 110, 0.10) !important;
+  background-color: #eaf6fb !important;
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 252, 255, 0.85) 100%) !important;
-  box-shadow: 0 4px 16px rgba(11, 52, 83, 0.04) !important;
+    linear-gradient(180deg, #eaf6fb 0%, #d6ecf6 100%) !important;
+  box-shadow: 0 4px 16px rgba(11, 52, 83, 0.07) !important;
   padding: 14px 18px !important;
   grid-column-gap: 10px !important;
   grid-row-gap: 10px !important;
@@ -345,8 +345,11 @@ h6,
 
 .choose-card:hover {
   transform: translateY(-3px) !important;
-  border-color: rgba(56, 189, 248, 0.5) !important;
-  box-shadow: 0 10px 24px rgba(11, 52, 83, 0.1) !important;
+  border-color: rgba(56, 189, 248, 0.55) !important;
+  box-shadow: 0 10px 24px rgba(11, 52, 83, 0.14) !important;
+  background-color: #e2f1fa !important;
+  background-image:
+    linear-gradient(180deg, #e2f1fa 0%, #cfe6f3 100%) !important;
 }
 
 .choose-card-icon-wrap,
