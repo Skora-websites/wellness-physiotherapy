@@ -11,3 +11,6 @@ testimonail_videos/
 
 *.log
 .DS_Store
+
+# Do not ship the Node backend to the frontend/Vercel build.
+backend/
