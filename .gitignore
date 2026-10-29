@@ -1,7 +1,7 @@
 node_modules/
 dist/
 .tmp_ref/
-backend/
+public/assets/img/uploads/
 testimonail_videos/
 .dev-server.log
 

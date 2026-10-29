@@ -10,7 +10,7 @@ Working rules for the clinic website. Keep this file in sync with the codebase.
 | Styling | Base stylesheet `public/assets/css/wellness.css` + brand overrides in `public/assets/css/brand.css` |
 | Rendering | Pure SSR — Express renders HTML per request, client hydrates |
 | Server | Node.js + Express in `backend/` |
-| Database | MongoDB (planned, phase 2) |
+| Database | MySQL / MariaDB via `mysql2` (schema auto-created by `backend/src/db.js`) |
 | Animations | Interaction runtime + jQuery + GSAP (scroll reveal, pinning, sliders, hover) |
 
 ## Directory rules
@@ -57,8 +57,10 @@ dist/                 → build output only, never edited by hand
 
 ## Content and admin panel (phase 2)
 
-- The admin panel writes to MongoDB through `/api/*` endpoints; the site never reads the database
-  from the browser.
+- The admin panel writes to MySQL through `/api/*` endpoints; the site never connects to the
+  database from the browser. Public pages read `/api/content` and fall back to `src/data/*.js`.
+- Connection settings come from env (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`);
+  see `.env.example`. Tables and first-run seed data are created automatically on boot.
 - Server render fetches page data through the backend (direct service call in SSR, not an HTTP
   round-trip), then hands it to sections as props.
 - Every editable block gets a content key: hero, about, services, choose, works, approach, pricing,
