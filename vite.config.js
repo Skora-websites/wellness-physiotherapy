@@ -4,6 +4,15 @@ import react from '@vitejs/plugin-react'
 // Serves the admin REST API from the dev server so `npm run dev` needs one
 // process. Production mounts the same router in backend/src/app.js.
 function adminApi() {
+  // Only used by `npm run dev`. Produced by Vercel builds when backend/src is
+  // checked out locally; skip the plugin entirely on a fresh clone so the build
+  // still succeeds without the uncommitted backend/ directory.
+  try {
+    require.resolve('./backend/src/api.js')
+  } catch {
+    return {}
+  }
+
   return {
     name: 'admin-api',
     apply: 'serve',
