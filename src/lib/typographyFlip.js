@@ -39,7 +39,6 @@ export function initSectionTypographyAnimations() {
     wrapper.className = 'flip-header-inner'
     wrapper.setAttribute('aria-hidden', 'true')
 
-    let charIndex = 0
     const words = rawText.split(/\s+/)
 
     words.forEach((word, wordIdx) => {
@@ -50,10 +49,11 @@ export function initSectionTypographyAnimations() {
         const char = word[i]
         const charSpan = document.createElement('span')
         charSpan.className = 'flip-char'
-        charSpan.style.setProperty('--char-index', charIndex)
+        // Same index for every char of the word, so each word flips up as a
+        // single unit (one line at a time), like the hero headline.
+        charSpan.style.setProperty('--char-index', wordIdx)
         charSpan.textContent = char
         wordSpan.appendChild(charSpan)
-        charIndex++
       }
 
       wrapper.appendChild(wordSpan)
@@ -63,7 +63,6 @@ export function initSectionTypographyAnimations() {
         spaceSpan.className = 'flip-space'
         spaceSpan.innerHTML = '&nbsp;'
         wrapper.appendChild(spaceSpan)
-        charIndex++
       }
     })
 

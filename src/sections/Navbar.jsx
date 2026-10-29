@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { openAppointmentModal } from '../components/AppointmentModal'
 import { LiquidNavbar, NimbusIcons } from '../components/ui/liquid-glass-navbar'
 
@@ -21,6 +21,7 @@ export default function Navbar({ path = '/' }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const activeIndex = getActiveIndex(path)
+  const menuRef = useRef(null)
 
   // Track scroll position past hero section
   useEffect(() => {
@@ -49,13 +50,25 @@ export default function Navbar({ path = '/' }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [menuOpen])
 
+  // Close mobile navigation when clicking outside the menu
+  useEffect(() => {
+    if (!menuOpen) return
+    const handlePointerDown = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [menuOpen])
+
   return (
     <div
       role='banner'
       className={`navbar w-nav unified-nav-wrapper${scrolled ? ' is-scrolled' : ''}`}
     >
       <div className='container w-container'>
-        <div className='navbar-main-wrapper unified-navbar-row'>
+        <div ref={menuRef} className='navbar-main-wrapper unified-navbar-row'>
 
           {/* Unified Liquid Glass Pill: Logo + Navigation Items */}
           <div className='unified-pill-container'>

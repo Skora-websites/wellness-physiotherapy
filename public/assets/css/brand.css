@@ -9062,7 +9062,7 @@ textarea {
     max-height: none !important;
     aspect-ratio: auto !important;
     object-fit: cover !important;
-    object-position: center center !important;
+    object-position: 62% center !important;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 72px);
     mask-image: linear-gradient(to bottom, transparent 0, #000 72px);
   }
@@ -9340,4 +9340,157 @@ textarea {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   Mobile feedback pass (427px): nav, hero halves, cards, CTA, footer
+   ========================================================================== */
+
+/* Shared wrapper for the two footer link columns: a 4-column row on desktop,
+   a two-up flex row on small screens (see the mobile block below). */
+.footer-info-links {
+  display: contents;
+}
+
+@media screen and (max-width: 640px) {
+  /* 3. The Nimbus active-drop highlight has no items to point at on mobile */
+  .unified-liquid-pill .nimbus-drop {
+    display: none !important;
+  }
+
+  /* 5. Larger runner figure */
+  .hero-runner-cutout {
+    width: clamp(126px, 37vw, 150px) !important;
+  }
+
+  .hero-runner-overlap-wrap {
+    top: 116px !important;
+  }
+
+  /* 6. Hero fills the viewport: top half gradient, bottom half photo */
+  .hero-editorial-section {
+    min-height: 100svh !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .hero-editorial-section > .w-layout-blockcontainer {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .hero-editorial-section > .w-layout-blockcontainer .hero-editorial-wrapper {
+    width: 100% !important;
+  }
+
+  .hero-editorial-fullbleed {
+    flex: 0 0 50svh !important;
+    margin-top: 0 !important;
+  }
+
+  .hero-editorial-fullbleed-img {
+    height: 50svh !important;
+  }
+
+  /* 8. Bigger hero headline */
+  .hero-editorial-h1 {
+    font-size: clamp(46px, 14vw, 60px) !important;
+  }
+
+  /* 9. The mobile service stack must not slide out of its clipped stage */
+  #services .service-loop {
+    transform: none !important;
+  }
+
+  /* 10. Choose cards, two per row */
+  .choose-wrap {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .choose-card {
+    padding: 12px 12px !important;
+  }
+
+  .choose-card .h4 {
+    font-size: 15px !important;
+    line-height: 1.25 !important;
+  }
+
+  .choose-card .body-text {
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .choose-card-icon-wrap {
+    margin-bottom: 0 !important;
+  }
+
+  /* 12. CTA band: everything centred */
+  .cta-band-inner {
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .cta-band-copy {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .cta-band-actions {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* 14. Footer: services + quick links side by side, shorter footer */
+  .footer-info {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px 18px !important;
+    margin-bottom: 34px !important;
+  }
+
+  .footer-info > .footer-info-brand,
+  .footer-info > .footer-info-links,
+  .footer-info > .footer-info-col:last-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  .footer-info-links {
+    display: flex !important;
+    gap: 18px !important;
+  }
+
+  .footer-info-links > * {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+  }
+
+  .footer-info-links .footer-info-title,
+  .footer-info-links .footer-info-list {
+    min-width: 0 !important;
+  }
+
+  .section.footer {
+    padding-top: 56px !important;
+    padding-bottom: 28px !important;
+  }
+
+  .footer-image-wrapper {
+    margin: 26px 0 22px !important;
+  }
+}
+
+/* 2. Eyebrow headers: no background pill anywhere (scoped fixes already exist
+   for #process, .section.journey and dark sections; this covers the rest). */
+.sub-tag-text-wrap {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+}
+
 
