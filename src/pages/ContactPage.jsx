@@ -92,6 +92,34 @@ export default function ContactPage() {
               <BookingForm />
             </div>
           </div>
+
+          <div className='contact-map-embed'>
+            <div className='contact-map-embed-head'>
+              <div>
+                <span className='contact-map-embed-tag'>{'Find Us'}</span>
+                <h2 className='contact-map-embed-title'>{CLINIC_INFO.name}</h2>
+                <p className='contact-map-embed-address'>{CLINIC_INFO.address}</p>
+              </div>
+              <a
+                href={CLINIC_INFO.googleMapsUrl}
+                target='_blank'
+                rel='noreferrer'
+                className='contact-map-embed-link'
+              >
+                {'Get Directions'}
+                <span aria-hidden='true'>{'\u2192'}</span>
+              </a>
+            </div>
+            <div className='contact-map-frame'>
+              <iframe
+                title='Wellness Physiotherapy Centre location on Google Maps'
+                src='https://www.google.com/maps?q=28.6101164,77.4368737&z=16&hl=en&output=embed'
+                loading='lazy'
+                referrerPolicy='no-referrer-when-downgrade'
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
         </div>
       </section>
     </main>

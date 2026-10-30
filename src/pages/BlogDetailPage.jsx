@@ -55,11 +55,9 @@ export default function BlogDetailPage({ slug }) {
 
             <div className='blog-meta-tags-row'>
               <span className='blog-meta-tag'>
-                <span className='blog-meta-calendar'>📅</span>
                 {`${post.date} ${post.month}`}
               </span>
               <span className='blog-meta-tag'>
-                <span className='blog-meta-readtime'>⏱</span>
                 {'4 min read'}
               </span>
               <span className='blog-meta-tag is-badge'>
@@ -108,7 +106,7 @@ export default function BlogDetailPage({ slug }) {
             {/* Key Clinical Takeaways Frosted Box */}
             <div className='blog-takeaways-card'>
               <div className='blog-takeaways-header'>
-                <div className='blog-takeaways-icon-box'>💡</div>
+                <div className='blog-takeaways-icon-box' aria-hidden='true'></div>
                 <h3 className='blog-takeaways-title'>{'Key Clinical Takeaways'}</h3>
               </div>
               <ul className='blog-takeaways-list'>
@@ -176,7 +174,7 @@ export default function BlogDetailPage({ slug }) {
                 <span className='blog-bio-label'>{'About the Author'}</span>
                 <h3 className='blog-bio-name'>{'Dr. Arun Yadav (PT)'}</h3>
                 <p className='blog-bio-desc'>
-                  {'Dr. Arun Yadav is a senior physiotherapist with over 10 years of clinical experience specializing in sports rehabilitation, spinal decompression, orthopedic aftercare, and neurological recovery. He has helped over 5,000 patients regain active, pain-free mobility.'}
+                  {'Dr. Arun Yadav is a senior physiotherapist with over 7 years of clinical experience specializing in sports rehabilitation, spinal decompression, orthopedic aftercare, and neurological recovery. He has helped over 5,000 patients regain active, pain-free mobility.'}
                 </p>
                 <div className='blog-bio-action'>
                   <a

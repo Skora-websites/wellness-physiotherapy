@@ -1,5 +1,4 @@
 import { openAppointmentModal } from '../components/AppointmentModal'
-import LiveOrb from '../components/LiveOrb'
 import ShaderBackground from '../components/ui/ShaderBackground'
 
 function renderLetters(text, startIndex = 0) {
@@ -73,9 +72,8 @@ export default function Hero() {
               className='primary-button w-inline-block cta-button-eyes'
             >
               <span className='hero-mobile-button-label'>Book Appointment</span>
-              <span className='button-arrow-wrap cta-eyes-wrap'>
-                <LiveOrb compact={true} className='cta-button-orb' />
-                <img src='/assets/img/arrow-navy.svg' alt='' className='arrow-icon cta-hover-arrow' />
+              <span className='button-arrow-wrap'>
+                <img src='/assets/img/arrow-navy.svg' alt='' className='arrow-icon' />
               </span>
             </a>
           </div>
