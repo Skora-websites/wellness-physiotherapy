@@ -306,8 +306,19 @@ export function ShaderBackground({ className, style }) {
       if (pendingRelease !== undefined) window.clearTimeout(pendingRelease)
       pendingContextReleases.delete(canvas)
     }
-    const gl = canvas.getContext('webgl', { antialias: false, powerPreference: 'low-power' })
+    const gl =
+      canvas.getContext('webgl', { antialias: false, powerPreference: 'low-power' }) ||
+      canvas.getContext('experimental-webgl', { antialias: false, powerPreference: 'low-power' })
     if (!gl) return
+
+    const handleContextLost = (e) => {
+      e.preventDefault()
+      if (raf !== 0) {
+        cancelAnimationFrame(raf)
+        raf = 0
+      }
+    }
+    canvas.addEventListener('webglcontextlost', handleContextLost, false)
 
     const compile = (type, src) => {
       const s = gl.createShader(type)
@@ -557,9 +568,10 @@ export function ShaderBackground({ className, style }) {
         window.removeEventListener('blur', onPointerLeave)
         document.documentElement.removeEventListener(
           'pointerleave',
-          onPointerLeave,
+          onPointerLeave
         )
       }
+      canvas.removeEventListener('webglcontextlost', handleContextLost)
       gl.deleteBuffer(buf)
       gl.deleteProgram(program)
       if (pendingContextReleases) {
