@@ -3,7 +3,7 @@ import { openAppointmentModal } from '../components/AppointmentModal'
 
 const STATS = [
   { key: 'patients', value: 1000, suffix: '+', label: 'Patients treated with care' },
-  { key: 'years', value: 7, suffix: '+', label: 'Years of clinical experience' },
+  { key: 'years', value: 5, suffix: '+', label: 'Years of clinical experience' },
   { key: 'satisfaction', value: 95, suffix: '%', label: 'Patient satisfaction rate' }
 ]
 

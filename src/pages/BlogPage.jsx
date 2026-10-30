@@ -4,14 +4,12 @@ import PostGrid from '../components/PostGrid'
 import CtaBand from '../components/CtaBand'
 import BeaconPagination from '../components/BeaconPagination'
 import Cta from '../sections/Cta'
-import { useContent } from '../lib/content'
+import { posts } from '../data/posts'
 
 const PAGE_SIZE = 3
 
 export default function BlogPage() {
   const [page, setPage] = useState(1)
-  const { blogs } = useContent()
-  const posts = blogs.filter((post) => post.status !== 'draft' && post.contentType !== 'standalone')
   const pageCount = Math.ceil(posts.length / PAGE_SIZE)
   const visiblePosts = posts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 

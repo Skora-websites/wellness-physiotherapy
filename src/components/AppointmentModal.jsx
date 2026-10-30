@@ -16,7 +16,6 @@ const CONCERN_OPTIONS = [
 ]
 
 const CLINIC_WHATSAPP_NUMBER = CLINIC_INFO.whatsappNumber
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export function openAppointmentModal(concern = '') {
   if (typeof window !== 'undefined') {
@@ -37,13 +36,10 @@ export default function AppointmentModal() {
   const [message, setMessage] = useState('')
   const [errors, setErrors] = useState({})
   const [isSuccess, setIsSuccess] = useState(false)
-  const [saveState, setSaveState] = useState('idle')
 
   const triggerElementRef = useRef(null)
   const modalCardRef = useRef(null)
   const firstInputRef = useRef(null)
-  const phoneInputRef = useRef(null)
-  const emailInputRef = useRef(null)
 
   // Listen for global open triggers and manage keyboard trap
   useEffect(() => {
@@ -51,7 +47,6 @@ export default function AppointmentModal() {
       triggerElementRef.current = document.activeElement
       setIsOpen(true)
       setIsSuccess(false)
-      setSaveState('idle')
       setErrors({})
       if (e.detail?.concern && CONCERN_OPTIONS.includes(e.detail.concern)) {
         setConcern(e.detail.concern)
@@ -123,7 +118,6 @@ export default function AppointmentModal() {
   const handleClose = () => {
     setIsOpen(false)
     setIsSuccess(false)
-    setSaveState('idle')
     setErrors({})
     setTimeout(() => {
       if (triggerElementRef.current && typeof triggerElementRef.current.focus === 'function') {
@@ -143,9 +137,6 @@ export default function AppointmentModal() {
     } else if (cleanPhone.length < 10) {
       errs.phone = 'Phone number should be at least 10 digits.'
     }
-    if (email.trim() && !EMAIL_RE.test(email.trim())) {
-      errs.email = 'Enter a valid email address, such as name@example.com.'
-    }
     return errs
   }
 
@@ -154,8 +145,6 @@ export default function AppointmentModal() {
     const validationErrors = validate()
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
-      const refs = { fullName: firstInputRef, phone: phoneInputRef, email: emailInputRef }
-      refs[Object.keys(validationErrors)[0]]?.current?.focus()
       return
     }
 
@@ -182,28 +171,10 @@ export default function AppointmentModal() {
       fullText
     )}`
 
-    // Redirect to WhatsApp first: window.open must run inside the click gesture
-    // or browsers block it. The admin copy is saved right after.
+    // Redirect to WhatsApp
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
-    setIsSuccess(true)
-    setSaveState('saving')
 
-    fetch('/api/consultations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: fullName.trim(),
-        phone: phone.trim(),
-        email: email.trim(),
-        concern: selectedConcern,
-        message: message.trim()
-      })
-    })
-      .then(async (response) => {
-        if (!response.ok) throw new Error('save failed')
-        setSaveState('saved')
-      })
-      .catch(() => setSaveState('failed'))
+    setIsSuccess(true)
   }
 
   if (!isOpen) return null
@@ -251,16 +222,6 @@ export default function AppointmentModal() {
               Our clinical coordinator in Noida will review your concern and
               confirm your consultation time slot.
             </p>
-            {saveState === 'saving' && (
-              <p className='appointment-modal-status' role='status'>Saving a copy for our team…</p>
-            )}
-            {saveState === 'failed' && (
-              <p className='appointment-modal-save-error' role='alert'>
-                WhatsApp is opening with your details, but we couldn’t save a copy in our
-                system. If WhatsApp doesn’t open, call us on +91 63957 16031 so we don’t
-                miss your request.
-              </p>
-            )}
             <div className='appointment-modal-actions'>
               <button
                 type='button'
@@ -325,7 +286,6 @@ export default function AppointmentModal() {
                     PHONE <span className='required-star' aria-hidden='true'>*</span>
                   </label>
                   <input
-                    ref={phoneInputRef}
                     id='modal-phone'
                     type='tel'
                     autoComplete='tel'
@@ -356,25 +316,14 @@ export default function AppointmentModal() {
                     EMAIL
                   </label>
                   <input
-                    ref={emailInputRef}
                     id='modal-email'
                     type='email'
                     autoComplete='email'
-                    className={`appointment-form-input ${errors.email ? 'has-error' : ''}`}
+                    className='appointment-form-input'
                     placeholder='you@example.com'
                     value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value)
-                      if (errors.email) setErrors({ ...errors, email: null })
-                    }}
-                    aria-invalid={errors.email ? 'true' : 'false'}
-                    aria-describedby={errors.email ? 'modal-email-error' : undefined}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
-                  {errors.email && (
-                    <span id='modal-email-error' className='appointment-field-error' role='alert'>
-                      {errors.email}
-                    </span>
-                  )}
                 </div>
 
                 {/* Concern */}

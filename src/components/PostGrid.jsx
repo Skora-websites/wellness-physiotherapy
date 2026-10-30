@@ -1,8 +1,6 @@
-import { useContent } from '../lib/content'
+import { posts } from '../data/posts'
 
 export default function PostGrid({ limit, items: supplied }) {
-  const { blogs } = useContent()
-  const posts = blogs.filter((post) => post.status !== 'draft' && post.contentType !== 'standalone')
   const items = supplied ?? (typeof limit === 'number' ? posts.slice(0, limit) : posts)
 
   return (

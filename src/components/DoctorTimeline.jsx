@@ -29,7 +29,7 @@ const milestones = [
     phase: '05 · Clinical Practice',
     title: 'Founder & Chief Specialist',
     badge: 'Wellness Noida',
-    desc: 'Over 7 years and 1,000+ patient recoveries. Personally conducts every primary assessment with measurable milestones.'
+    desc: 'Over 5 years and 1,000+ patient recoveries. Personally conducts every primary assessment with measurable milestones.'
   }
 ]
 
@@ -74,11 +74,7 @@ export default function DoctorTimeline() {
   const lineWidthPercent = Math.min(100, Math.max(0, scrollProgress * 100))
 
   return (
-    <div
-      className='doctor-timeline horizontal-timeline'
-      ref={timelineRef}
-      style={{ '--tl-progress': scrollProgress }}
-    >
+    <div className='doctor-timeline horizontal-timeline' ref={timelineRef}>
       <div className='doctor-timeline-header'>
         <div className='doctor-timeline-tag'>
           <span className='doctor-timeline-dot'></span>

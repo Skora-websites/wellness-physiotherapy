@@ -4,13 +4,12 @@ import CtaBand from '../components/CtaBand'
 import BeaconPagination from '../components/BeaconPagination'
 import SpecialityCarousel from '../components/SpecialityCarousel'
 import Cta from '../sections/Cta'
-import { useContent } from '../lib/content'
+import { services } from '../data/services'
 
 const PAGE_SIZE = 6
 
 export default function ServicesPage() {
   const [page, setPage] = useState(1)
-  const { services } = useContent()
   const pageCount = Math.ceil(services.length / PAGE_SIZE)
   const visibleServices = services.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 

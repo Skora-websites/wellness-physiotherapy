@@ -307,57 +307,28 @@ export function ShaderBackground({ className, style }) {
       pendingContextReleases.delete(canvas)
     }
     const gl = canvas.getContext('webgl', { antialias: false, powerPreference: 'low-power' })
-    if (!gl) {
-      // CSS gradient underneath stays visible instead of a blank block.
-      canvas.style.display = 'none'
-      return
-    }
-    // Mobile GPUs lose contexts on backgrounding; reveal the CSS paint instead.
-    const onContextLost = (event) => {
-      event.preventDefault()
-      canvas.style.display = 'none'
-    }
-    canvas.addEventListener('webglcontextlost', onContextLost, false)
+    if (!gl) return
 
     const compile = (type, src) => {
       const s = gl.createShader(type)
       if (!s) return null
       gl.shaderSource(s, src)
       gl.compileShader(s)
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-        console.warn('ShaderBackground shader compile failed:', gl.getShaderInfoLog(s))
-        gl.deleteShader(s)
-        return null
-      }
       return s
     }
     const program = gl.createProgram()
     if (!program) return
     const vertexShader = compile(gl.VERTEX_SHADER, VERT)
     const fragmentShader = compile(gl.FRAGMENT_SHADER, FRAG)
-    if (!vertexShader || !fragmentShader) {
-      // Shader compile failure on this GPU: hide the canvas so the CSS
-      // gradient underneath stays visible instead of a blank block.
-      canvas.style.display = 'none'
-      return
-    }
+    if (!vertexShader || !fragmentShader) return
     gl.attachShader(program, vertexShader)
     gl.attachShader(program, fragmentShader)
     gl.linkProgram(program)
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.warn('ShaderBackground program link failed:', gl.getProgramInfoLog(program))
-      canvas.style.display = 'none'
-      return
-    }
     gl.deleteShader(vertexShader)
     gl.deleteShader(fragmentShader)
     gl.useProgram(program)
 
     const buf = gl.createBuffer()
-    if (!buf) {
-      canvas.style.display = 'none'
-      return
-    }
     gl.bindBuffer(gl.ARRAY_BUFFER, buf)
     gl.bufferData(
       gl.ARRAY_BUFFER,
@@ -574,7 +545,6 @@ export function ShaderBackground({ className, style }) {
     requestRender()
     return () => {
       disposed = true
-      canvas.removeEventListener('webglcontextlost', onContextLost, false)
       cancelAnimationFrame(raf)
       resizeObserver.disconnect()
       intersectionObserver.disconnect()

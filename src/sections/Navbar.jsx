@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { openAppointmentModal } from '../components/AppointmentModal'
 import { LiquidNavbar, NimbusIcons } from '../components/ui/liquid-glass-navbar'
 
@@ -21,7 +21,6 @@ export default function Navbar({ path = '/' }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const activeIndex = getActiveIndex(path)
-  const menuRef = useRef(null)
 
   // Track scroll position past hero section
   useEffect(() => {
@@ -50,25 +49,13 @@ export default function Navbar({ path = '/' }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [menuOpen])
 
-  // Close mobile navigation when clicking outside the menu
-  useEffect(() => {
-    if (!menuOpen) return
-    const handlePointerDown = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenuOpen(false)
-      }
-    }
-    document.addEventListener('pointerdown', handlePointerDown)
-    return () => document.removeEventListener('pointerdown', handlePointerDown)
-  }, [menuOpen])
-
   return (
     <div
       role='banner'
       className={`navbar w-nav unified-nav-wrapper${scrolled ? ' is-scrolled' : ''}`}
     >
       <div className='container w-container'>
-        <div ref={menuRef} className='navbar-main-wrapper unified-navbar-row'>
+        <div className='navbar-main-wrapper unified-navbar-row'>
 
           {/* Unified Liquid Glass Pill: Logo + Navigation Items */}
           <div className='unified-pill-container'>
@@ -90,23 +77,23 @@ export default function Navbar({ path = '/' }) {
                 </span>
               </a>
               <span className='liquid-pill-divider' aria-hidden='true'></span>
-
-              {/* Mobile Hamburger Button — lives inside the pill so the navbar is one piece */}
-              <button
-                type='button'
-                aria-label='Toggle navigation menu'
-                aria-expanded={menuOpen}
-                aria-controls='primary-navigation'
-                onClick={() => setMenuOpen((open) => !open)}
-                className={`menu-button${menuOpen ? ' is-open' : ''}`}
-              >
-                <div className='menu-button-wrap'>
-                  <div className='nv-bar nv-bar-top'></div>
-                  <div className='nv-bar nv-bar-bottom'></div>
-                </div>
-              </button>
             </LiquidNavbar>
           </div>
+
+          {/* Mobile Hamburger Button */}
+          <button
+            type='button'
+            aria-label='Toggle navigation menu'
+            aria-expanded={menuOpen}
+            aria-controls='primary-navigation'
+            onClick={() => setMenuOpen((open) => !open)}
+            className={`menu-button w-nav-button${menuOpen ? ' w--open' : ''}`}
+          >
+            <div className='menu-button-wrap'>
+              <div className='menu-top'></div>
+              <div className='menu-bottom'></div>
+            </div>
+          </button>
 
           {/* Mobile Menu Dropdown */}
           <div

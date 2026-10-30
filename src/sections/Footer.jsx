@@ -52,8 +52,6 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Services + Quick Links share one row: two columns on small screens */}
-            <div className='footer-info-links'>
             <div className='footer-info-col'>
               <div className='footer-info-title'>
                 {'Our Services'}
@@ -82,7 +80,6 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
             </div>
 
             <div className='footer-info-col'>

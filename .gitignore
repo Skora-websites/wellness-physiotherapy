@@ -1,7 +1,7 @@
 node_modules/
 dist/
 .tmp_ref/
-public/assets/img/uploads/
+backend/
 testimonail_videos/
 .dev-server.log
 
@@ -11,6 +11,3 @@ testimonail_videos/
 
 *.log
 .DS_Store
-
-# Do not ship the Node backend to the frontend/Vercel build.
-backend/

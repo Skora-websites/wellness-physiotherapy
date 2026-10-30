@@ -1,14 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/client",
-  "rewrites": [
-    {
-      "source": "/admin",
-      "destination": "/backoffice/index.html"
-    },
-    {
-      "source": "/admin/(.*)",
-      "destination": "/backoffice/index.html"
-    }
-  ]
+  "outputDirectory": "dist/client"
 }

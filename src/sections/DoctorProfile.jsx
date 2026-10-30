@@ -10,7 +10,7 @@ const specialties = [
 ]
 
 const stats = [
-  { label: 'Years in practice', value: 7, suffix: '+' },
+  { label: 'Years in practice', value: 5, suffix: '+' },
   { label: 'Patients treated', value: 1000, suffix: '+' },
   { label: 'Satisfaction', value: 95, suffix: '%' }
 ]
@@ -33,7 +33,7 @@ export default function DoctorProfile() {
               {'BPT, MPT (Neuro), COMT, CDCT — Sports & Rehabilitation Specialist'}
             </div>
             <p className='body-text gray doctor-bio'>
-              {'Dr. Arun Yadav founded Wellness Physiotherapy Centre after seven years of clinical practice across sports injury rehabilitation, neurological recovery and advanced manual therapy. He still assesses every new patient himself.'}
+              {'Dr. Arun Yadav founded Wellness Physiotherapy Centre after five years of clinical practice across sports injury rehabilitation, neurological recovery and advanced manual therapy. He still assesses every new patient himself.'}
             </p>
             <p className='body-text gray doctor-bio'>
               {'His approach is deliberately hands-on: find the cause, treat it manually, then rebuild strength with a plan you can actually follow. Patients range from national-level para-athletes to desk workers with stubborn neck pain.'}

@@ -1,3 +1,5 @@
+import Cloudscape from '../components/ui/Cloudscape'
+
 export default function Choose() {
   return (
     <>
@@ -31,6 +33,7 @@ export default function Choose() {
             <div className='choose-main-wrap'>
               <div className='choose-wrap'>
                 <div grow-in='' className='choose-card _01'>
+                  <Cloudscape className='choose-card-cloud-bg' colorBottom='#c5e1f7' colorMid='#edf6fc' colorTop='#ffffff' speed={0.4} />
                   <div className='choose-card-icon-wrap'>
                     <img src='/assets/img/3d1387-6a8dcedb6e207e2e5dac174c_image-125.svg' loading='lazy' alt='' className='choose-icon' />
                   </div>
@@ -45,6 +48,7 @@ export default function Choose() {
                   </div>
                 </div>
                 <div grow-in='' className='choose-card _02'>
+                  <Cloudscape className='choose-card-cloud-bg' colorBottom='#c5e1f7' colorMid='#edf6fc' colorTop='#ffffff' speed={0.4} />
                   <div className='choose-card-icon-wrap'>
                     <img src='/assets/img/5f9e55-6a8dd3473a7bc4dfbd494829_image-126.svg' loading='lazy' alt='' className='choose-icon' />
                   </div>
@@ -59,6 +63,7 @@ export default function Choose() {
                   </div>
                 </div>
                 <div grow-in='' className='choose-card _03'>
+                  <Cloudscape className='choose-card-cloud-bg' colorBottom='#c5e1f7' colorMid='#edf6fc' colorTop='#ffffff' speed={0.4} />
                   <div className='choose-card-icon-wrap'>
                     <img src='/assets/img/6fa5f8-6a8dd3837b913a25c52c864c_image-127.svg' loading='lazy' alt='' className='choose-icon' />
                   </div>
@@ -73,6 +78,7 @@ export default function Choose() {
                   </div>
                 </div>
                 <div grow-in='' className='choose-card _04'>
+                  <Cloudscape className='choose-card-cloud-bg' colorBottom='#c5e1f7' colorMid='#edf6fc' colorTop='#ffffff' speed={0.4} />
                   <div className='choose-card-icon-wrap'>
                     <img src='/assets/img/a86971-6a8dd384deba7615c015b8d8_image-128.svg' loading='lazy' alt='' className='choose-icon' />
                   </div>
@@ -87,6 +93,7 @@ export default function Choose() {
                   </div>
                 </div>
                 <div grow-in='' className='choose-card _05'>
+                  <Cloudscape className='choose-card-cloud-bg' colorBottom='#c5e1f7' colorMid='#edf6fc' colorTop='#ffffff' speed={0.4} />
                   <div className='choose-card-icon-wrap'>
                     <img src='/assets/img/a86971-6a8dd384deba7615c015b8d8_image-128.svg' loading='lazy' alt='' className='choose-icon' />
                   </div>
@@ -101,6 +108,7 @@ export default function Choose() {
                   </div>
                 </div>
                 <div grow-in='' className='choose-card _06'>
+                  <Cloudscape className='choose-card-cloud-bg' colorBottom='#c5e1f7' colorMid='#edf6fc' colorTop='#ffffff' speed={0.4} />
                   <div className='choose-card-icon-wrap'>
                     <img src='/assets/img/3d1387-6a8dcedb6e207e2e5dac174c_image-125.svg' loading='lazy' alt='' className='choose-icon' />
                   </div>

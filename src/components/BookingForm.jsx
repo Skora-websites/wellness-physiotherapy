@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CLINIC_INFO } from '../data/clinic'
 
 const emptyForm = {
   name: '',
@@ -34,26 +35,17 @@ function validate(form) {
 
 const fieldOrder = ['name', 'phone', 'email', 'message']
 
-const SEND_ERROR = 'We couldn’t send your message. Check your connection and try again, or call us on +91 63957 16031.'
-
-// Marks failures reported by our own API so their wording is safe to show;
-// raw browser/network errors stay hidden behind SEND_ERROR.
-class ApiError extends Error {}
-
 export default function BookingForm() {
   const [form, setForm] = useState(emptyForm)
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
   const [status, setStatus] = useState('idle')
-  const [submitError, setSubmitError] = useState('')
 
   const errorList = Object.values(errors).filter(Boolean)
-  const sending = status === 'sending'
 
   const update = (field) => (event) => {
     const next = { ...form, [field]: event.target.value }
     setForm(next)
-    if (submitError) setSubmitError('')
     if (submitted) {
       setErrors(validate(next))
     }
@@ -66,73 +58,51 @@ export default function BookingForm() {
     if (el) el.focus()
   }
 
-  const submit = async (event) => {
+  const submit = (event) => {
     event.preventDefault()
-    if (sending) return
 
     const found = validate(form)
     setErrors(found)
     setSubmitted(true)
-    setSubmitError('')
 
     if (Object.keys(found).length) {
-      setStatus('idle')
       focusFirstInvalid(found)
       return
     }
 
-    // Contact messages land in Admin → Contact Messages. No WhatsApp handoff
-    // here; only the appointment form continues to WhatsApp.
-    setStatus('sending')
-    const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), 15000)
+    // Forward inquiry via WhatsApp to clinic desk
+    const messageLines = [
+      'Hello Wellness Physiotherapy,',
+      '',
+      'I would like to make an inquiry via your website contact desk.',
+      '',
+      `Full Name: ${form.name.trim()}`,
+      `Phone: ${form.phone.trim()}`,
+      form.email.trim() ? `Email: ${form.email.trim()}` : null,
+      `Inquiry: ${form.message.trim()}`,
+      '',
+      'Please get back to me. Thank you.'
+    ].filter(Boolean)
 
-    try {
-      const response = await fetch('/api/contacts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name.trim(),
-          phone: form.phone.trim(),
-          email: form.email.trim(),
-          subject: 'Website inquiry',
-          message: form.message.trim()
-        }),
-        signal: controller.signal
-      })
-      const data = await response.json().catch(() => ({}))
-      if (!response.ok) throw new ApiError(typeof data.error === 'string' ? data.error : '')
-      // Keep the entered text on failure; only clear it once the clinic has it.
-      setForm(emptyForm)
-      setErrors({})
-      setSubmitted(false)
-      setStatus('sent')
-    } catch (error) {
-      setStatus('error')
-      if (typeof navigator !== 'undefined' && navigator.onLine === false) {
-        setSubmitError('You appear to be offline. Reconnect and try again, or call us on +91 63957 16031.')
-      } else if (error?.name === 'AbortError') {
-        setSubmitError('The message took too long to send. Please try again, or call us on +91 63957 16031.')
-      } else if (error instanceof ApiError && error.message) {
-        setSubmitError(error.message)
-      } else {
-        setSubmitError(SEND_ERROR)
-      }
-    } finally {
-      clearTimeout(timer)
-    }
+    const whatsappUrl = `https://wa.me/${CLINIC_INFO.whatsappNumber}?text=${encodeURIComponent(
+      messageLines.join('\n')
+    )}`
+
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+
+    setSubmitted(false)
+    setStatus('success')
   }
 
   const close = () => {
     setForm(emptyForm)
     setErrors({})
     setSubmitted(false)
-    setSubmitError('')
     setStatus('idle')
   }
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Escape' && status === 'sent') close()
+    if (event.key === 'Escape' && status === 'success') close()
   }
 
   const fieldError = (field) =>
@@ -236,18 +206,12 @@ export default function BookingForm() {
             </p>
           )}
 
-          {submitError && (
-            <p className='booking-summary booking-field-full is-error' role='alert'>
-              {submitError}
-            </p>
-          )}
-
           <div className='booking-actions'>
-            <button type='submit' className='primary-button form-submit-btn' disabled={sending} aria-busy={sending}>
+            <button type='submit' className='primary-button form-submit-btn'>
               <div className='primary-button-inner'>
                 <div className='button-text-wrap'>
-                  <div className='button-text'>{sending ? 'Sending…' : 'Send Message'}</div>
-                  <div className='button-text'>{sending ? 'Sending…' : 'Send Message'}</div>
+                  <div className='button-text'>{'Send Message'}</div>
+                  <div className='button-text'>{'Send Message'}</div>
                 </div>
                 <div className='button-arrow-wrap'>
                   <img
@@ -267,13 +231,13 @@ export default function BookingForm() {
         </form>
       </div>
 
-      {status === 'sent' && (
+      {status === 'success' && (
         <div className='booking-overlay' onClick={(event) => { if (event.target === event.currentTarget) close() }} onKeyDown={handleKeyDown}>
           <div className='booking-modal' role='dialog' aria-modal='true' aria-labelledby='booking-modal-title'>
             <div className='booking-modal-icon' aria-hidden='true'>✓</div>
-            <h3 className='h3' id='booking-modal-title'>{'Message Sent'}</h3>
+            <h3 className='h3' id='booking-modal-title'>{'Inquiry Prepared'}</h3>
             <p className='body-text gray'>
-              {'Thank you for reaching out. Your message has reached our clinic desk and our team in Noida will get back to you shortly.'}
+              {'Thank you for reaching out. Your inquiry has been forwarded to our WhatsApp desk (+91 63957 16031) so our clinical team in Noida can assist you immediately.'}
             </p>
             <button
               type='button'
